@@ -1,7 +1,14 @@
 ## users.controller
 
+#No params - should return error
 GET http://localhost:3000/users
+
+#not numeric id should return error
+GET http://localhost:3000/users/abc
+
+#should assign default values for limit and page
 GET http://localhost:3000/users/123
 
-GET http://localhost:3000/users/123?limit=20&offset=100
+# params and queries are numeric - no error should appear
+GET http://localhost:3000/users/123?limit=20&page=100
 
