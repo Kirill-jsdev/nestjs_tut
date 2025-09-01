@@ -5,5 +5,19 @@ Content-Type: application/json
   "firstName": "John",
   "lastName": "Doe",
   "email": "john.doe@example.com",
-  "password": "securepassword"
+  "password": "aA1!11111"
+}
+
+
+
+
+
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe",
+  "password": "aA1!11111"
 }
