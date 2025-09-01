@@ -12,9 +12,15 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
+import { UserService } from './providers/user.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(
+    // inject UserService
+    private readonly userService: UserService,
+  ) {}
+
   @Get('{/:id}')
   public getUsers(
     @Param() params: GetUsersParamDto,
