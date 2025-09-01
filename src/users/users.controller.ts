@@ -23,17 +23,11 @@ export class UsersController {
 
   @Get('{/:id}')
   public getUsers(
-    @Param() params: GetUsersParamDto,
+    @Param() getUsersParamDto: GetUsersParamDto,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    console.log('Limit:', limit);
-    console.log('Page:', page);
-    return (
-      'This action returns all users with id ' +
-      params?.id +
-      ` ${limit} ${page}`
-    );
+    return this.userService.findAll(getUsersParamDto, limit, page);
   }
 
   @Post()
