@@ -6,6 +6,7 @@ import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
+import { TagsModule } from './tags/tags.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { User } from './users/user.entity';
         synchronize: true, // Note: set to false in production. This way during development we will not need to use migrations
       }),
     }),
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
