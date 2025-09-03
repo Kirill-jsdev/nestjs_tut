@@ -5,7 +5,6 @@ import { UsersModule } from 'src/users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/user.entity';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 
@@ -24,7 +23,8 @@ import { MetaOptionsModule } from './meta-options/meta-options.module';
         username: 'nest',
         password: 'nest',
         database: 'nestdb',
-        entities: [User],
+        // entities: [User], //we do not need this as we are using autoLoadEntities
+        autoLoadEntities: true,
         synchronize: true, // Note: set to false in production. This way during development we will not need to use migrations
       }),
     }),
