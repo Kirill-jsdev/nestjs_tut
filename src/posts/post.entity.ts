@@ -73,7 +73,9 @@ export class Post {
   //Will be implemented later when start working on relationships
   tags?: string[];
 
-  @OneToOne(() => MetaOption) //every post will have only one meta option related to it
+  @OneToOne(() => MetaOption, {
+    cascade: true,
+  }) //every post will have only one meta option related to it
   @JoinColumn() //this decorator will create a foreign key column in the post table
-  metaOption?: MetaOption; // in the DB this column will be named "metaOptionId" because of JoinColumn decorator
+  metaOptions?: MetaOption; // in the DB this column will be named "metaOptionsId" because of JoinColumn decorator
 }

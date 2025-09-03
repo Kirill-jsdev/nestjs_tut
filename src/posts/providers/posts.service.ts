@@ -21,22 +21,9 @@ export class PostsService {
 
   /** Create a new post */
   public async create(@Body() createPostDto: CreatePostDto) {
-    //1 create metaoptions that come as a part of the request
-    //We need to create meta option first before we can create post, as post has a foreign key of meta options table
-    const metaOptions = createPostDto.metaOptions
-      ? this.metaOptionsRepository.create(createPostDto.metaOptions)
-      : null;
-    if (metaOptions) {
-      await this.metaOptionsRepository.save(metaOptions);
-    }
-    //2 create post
     const post = this.postsRepository.create(createPostDto);
-    //3 Add metaoptions to the post
-    if (metaOptions) {
-      post.metaOption = metaOptions;
-    }
-    //4 return the created post
-    return await this.postsRepository.save(post);
+
+    return this.postsRepository.save(post);
   }
 
   public findAll(userId: number) {

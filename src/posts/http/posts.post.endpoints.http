@@ -4,16 +4,16 @@ Content-Type: application/json
 {
   "title": "My First Post",
   "postType": "post",
-  "slug": "my-first-post-1",
+  "slug": "my-first-post-5d000",
   "status": "draft",
   "content": "This is the content of my first post.",
   "schema": "{ \"type\": \"object\", \"properties\": { \"author\": { \"type\": \"string\" }, \"views\": { \"type\": \"number\" } }, \"required\": [\"author\"] }",
 
   "featuredImageUrl": "http://example.com/image.jpg",
-  "publishedOn": "2023-01-01T00:00:00Z"
+  "publishedOn": "2023-01-01T00:00:00Z",
   // "tags": ["nestjs", "typescript"],
-  // "metaOptions": {
-  //   "metaValue": "{\"sideBarEnabled\": true, \"footerEnabled\": true}"
-  // }
+  "metaOptions": {
+    "metaValue": "{\"sideBarEnabled\": true, \"footerEnabled\": true}"
+  }
 
 }
