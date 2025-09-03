@@ -23,7 +23,7 @@ import { User } from './users/user.entity';
         password: 'nest',
         database: 'nestdb',
         entities: [User],
-        synchronize: true, // Note: set to false in production
+        synchronize: true, // Note: set to false in production. This way during development we will not need to use migrations
       }),
     }),
   ],

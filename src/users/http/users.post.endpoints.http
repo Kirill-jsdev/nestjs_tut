@@ -4,20 +4,6 @@ Content-Type: application/json
 {
   "firstName": "John",
   "lastName": "Doe",
-  "email": "john.doe@example.com",
-  "password": "aA1!11111"
-}
-
-
-
-
-
-POST http://localhost:3000/users
-Content-Type: application/json
-
-{
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john.doe",
+  "email": "john@doe.com",
   "password": "aA1!11111"
 }
