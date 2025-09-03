@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -41,5 +42,10 @@ export class PostsController {
   ) {
     console.log('Updating post with ID:', id);
     console.log('Patch data:', patchPostsDto);
+  }
+
+  @Delete('/:id')
+  public deletePost(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.delete(id);
   }
 }

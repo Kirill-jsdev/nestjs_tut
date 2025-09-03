@@ -27,10 +27,25 @@ export class PostsService {
   }
 
   public async findAll() {
-    // const user = this.usersService.findOneById(userId);
-
     const posts = await this.postsRepository.find();
 
     return posts;
+  }
+
+  public async delete(postId: number) {
+    //find post
+    const post = await this.postsRepository.findOneBy({ id: postId });
+    //if post exists - delete it
+    if (post) {
+      await this.postsRepository.delete(postId);
+    }
+    //delete meta options
+    if (post?.metaOptions) {
+      await this.metaOptionsRepository.delete(post.metaOptions.id);
+    }
+
+    //send confirmation
+
+    return { deleted: true, postId };
   }
 }
