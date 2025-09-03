@@ -22,7 +22,7 @@ export class Tag {
 
   @Column({
     type: 'varchar',
-    length: 512,
+    length: 255,
     nullable: false,
     unique: true,
   })
