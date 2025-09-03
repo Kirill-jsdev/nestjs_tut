@@ -18,9 +18,9 @@ import { PatchPostDto } from './dtos/patch-post.dto';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @Get('{/:userId}')
-  public getPosts(@Param('userId', ParseIntPipe) userId: number) {
-    return this.postsService.findAll(userId);
+  @Get()
+  public getPosts() {
+    return this.postsService.findAll();
   }
 
   @ApiOperation({ summary: 'Creates a new post' })
