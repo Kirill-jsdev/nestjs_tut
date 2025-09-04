@@ -1,7 +1,14 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PostTypeEnum } from './enums/post-type.enum';
 import { PostStatusEnum } from './enums/post-stutus.enum';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
+import { User } from 'src/users/user.entity';
 
 @Entity()
 export class Post {
@@ -72,4 +79,7 @@ export class Post {
     eager: true,
   }) //every post will have only one meta option related to it
   metaOptions?: MetaOption; // in the DB this column will be named "metaOptionsId" because of JoinColumn decorator
+
+  @ManyToOne(() => User, (user) => user.posts)
+  author: User;
 }
