@@ -84,6 +84,6 @@ export class Post {
   author: User;
 
   @ManyToMany(() => Tag, { eager: true })
-  @JoinTable()
+  @JoinTable() //this makes the owning side of the relation. Related tags will be automatically removed when a post is deleted by ORM
   tags?: Tag[];
 }
