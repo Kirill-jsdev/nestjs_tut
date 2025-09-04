@@ -5,6 +5,7 @@ import { User } from '../user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * Service for handling user-related business logic and data access.
@@ -14,16 +15,14 @@ import { CreateUserDto } from '../dtos/create-user.dto';
  */
 @Injectable()
 export class UsersService {
-  /**
-   * Creates an instance of UsersService.
-   * @param authService AuthService instance for authentication logic.
-   */
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
 
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
+    private readonly configService: ConfigService,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -54,6 +53,9 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
+    const env = this.configService.get<string>('NODE_ENV');
+    console.log('Environment:', env);
+
     const isAuth = this.authService.isAuthenticated();
     console.log('IsAuthenticated:', isAuth);
     console.log('GetUsersParamDto:', getUsersParamDto);
