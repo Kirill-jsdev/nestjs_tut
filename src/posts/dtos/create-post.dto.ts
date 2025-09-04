@@ -96,14 +96,13 @@ export class CreatePostDto {
   publishedOn: Date;
 
   @ApiPropertyOptional({
-    example: ['nestjs', 'typescript'],
-    description: 'The tags of the post',
+    description: 'Ids of the tags associated with the post',
+    example: [1, 2, 3],
   })
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  @MinLength(3, { each: true })
-  tags?: string[];
+  @IsInt({ each: true })
+  tags?: number[];
 
   @ApiPropertyOptional({
     description: 'The meta options of the post',

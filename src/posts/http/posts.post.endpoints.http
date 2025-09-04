@@ -5,7 +5,7 @@ Content-Type: application/json
   "authorId": 1,
   "title": "My First Post",
   "postType": "post",
-  "slug": "my-first-post-5d000",
+  "slug": "my-first-post-111",
   "status": "draft",
   "content": "This is the content of my first post.",
   "schema": "{ \"type\": \"object\", \"properties\": { \"author\": { \"type\": \"string\" }, \"views\": { \"type\": \"number\" } }, \"required\": [\"author\"] }",
@@ -15,6 +15,7 @@ Content-Type: application/json
   // "tags": ["nestjs", "typescript"],
   "metaOptions": {
     "metaValue": "{\"sideBarEnabled\": true, \"footerEnabled\": true}"
-  }
+  },
+  "tags": [1]
 
 }
