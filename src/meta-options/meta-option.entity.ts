@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -25,6 +26,9 @@ export class MetaOption {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => Post, (post) => post.metaOptions)
+  @OneToOne(() => Post, (post) => post.metaOptions, {
+    onDelete: 'CASCADE', //if a post is deleted, its associated meta option will also be deleted
+  })
+  @JoinColumn() //decorator creates a foreign key column
   post: Post;
 }

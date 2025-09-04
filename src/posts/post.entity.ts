@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { PostTypeEnum } from './enums/post-type.enum';
 import { PostStatusEnum } from './enums/post-stutus.enum';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
@@ -77,6 +71,5 @@ export class Post {
     cascade: true,
     eager: true,
   }) //every post will have only one meta option related to it
-  @JoinColumn() //this decorator will create a foreign key column in the post table
   metaOptions?: MetaOption; // in the DB this column will be named "metaOptionsId" because of JoinColumn decorator
 }

@@ -33,18 +33,7 @@ export class PostsService {
   }
 
   public async delete(postId: number) {
-    //find post
-    const post = await this.postsRepository.findOneBy({ id: postId });
-    //if post exists - delete it
-    if (post) {
-      await this.postsRepository.delete(postId);
-    }
-    //delete meta options
-    if (post?.metaOptions) {
-      await this.metaOptionsRepository.delete(post.metaOptions.id);
-    }
-
-    //send confirmation
+    await this.postsRepository.delete(postId);
 
     return { deleted: true, postId };
   }
