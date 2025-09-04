@@ -49,7 +49,7 @@ export class Tag {
   })
   featuredImageUrl?: string;
 
-  @ManyToMany(() => Post, (post) => post.tags)
+  @ManyToMany(() => Post, (post) => post.tags, { onDelete: 'CASCADE' })
   posts: Post[];
 
   @CreateDateColumn()

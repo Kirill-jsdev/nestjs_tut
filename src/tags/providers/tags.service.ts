@@ -21,4 +21,10 @@ export class TagsService {
       where: { id: In(tagIds) },
     });
   }
+
+  public async delete(tagId: number) {
+    await this.tagsRepository.delete(tagId);
+
+    return { deleted: true, tagId };
+  }
 }
