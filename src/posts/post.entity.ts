@@ -73,7 +73,7 @@ export class Post {
   //Will be implemented later when start working on relationships
   tags?: string[];
 
-  @OneToOne(() => MetaOption, {
+  @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
     cascade: true,
     eager: true,
   }) //every post will have only one meta option related to it
