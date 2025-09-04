@@ -80,6 +80,6 @@ export class Post {
   }) //every post will have only one meta option related to it
   metaOptions?: MetaOption; // in the DB this column will be named "metaOptionsId" because of JoinColumn decorator
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts, { eager: true })
   author: User;
 }
