@@ -83,7 +83,7 @@ export class Post {
   @ManyToOne(() => User, (user) => user.posts, { eager: true })
   author: User;
 
-  @ManyToMany(() => Tag, { eager: true })
+  @ManyToMany(() => Tag, (tag) => tag.posts, { eager: true })
   @JoinTable() //this makes the owning side of the relation. Related tags will be automatically removed when a post is deleted by ORM
   tags?: Tag[];
 }
