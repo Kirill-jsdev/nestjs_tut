@@ -40,8 +40,7 @@ export class PostsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() patchPostsDto: PatchPostDto,
   ) {
-    console.log('Updating post with ID:', id);
-    console.log('Patch data:', patchPostsDto);
+    return this.postsService.update(id, patchPostsDto);
   }
 
   @Delete('/:id')

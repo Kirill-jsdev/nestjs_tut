@@ -2,7 +2,7 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "Javascript",
-  "slug": "js",
-  "description": "All about JS"
+  "name": "React",
+  "slug": "react",
+  "description": "All about React"
 }

@@ -1,7 +1,8 @@
-PATCH http://localhost:3000/posts/1
+PATCH http://localhost:3000/posts/18
 Content-Type: application/json
 
 {
-  "id": 1,
-  "title": "Updated Post Title"
+  "id": 18,
+  "title": "Updated Post Title",
+  "tags": [1, 3, 5]
 }
