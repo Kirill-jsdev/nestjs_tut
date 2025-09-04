@@ -2,7 +2,7 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "React",
-  "slug": "react",
-  "description": "All about React"
+  "name": "Pokemon",
+  "slug": "pokemon",
+  "description": "All about Pokemon"
 }
