@@ -80,14 +80,8 @@ export class UsersService {
    * @param id Unique identifier of the user.
    * @returns User object if found.
    */
-  public findOneById(id: number) {
-    console.log('FindOneById:', id);
-    return {
-      id: 1234,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      password: 'aA1!11111',
-    };
+  public async findOneById(userId: number) {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    return user;
   }
 }

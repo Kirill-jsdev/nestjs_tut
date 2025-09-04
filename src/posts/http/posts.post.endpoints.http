@@ -2,6 +2,7 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
+  "authorId": 1,
   "title": "My First Post",
   "postType": "post",
   "slug": "my-first-post-5d000",
