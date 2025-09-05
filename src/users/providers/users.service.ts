@@ -5,8 +5,9 @@ import {
   RequestTimeoutException,
   BadRequestException,
   NotFoundException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
-import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
@@ -78,31 +79,20 @@ export class UsersService {
    * @param page Page number for pagination.
    * @returns Array of user objects.
    */
-  public findAll(
-    getUsersParamDto: GetUsersParamDto,
-    limit: number,
-    page: number,
-  ) {
-    console.log('Profile API Key:', this.profileConfiguration);
-    const isAuth = this.authService.isAuthenticated();
-    console.log('IsAuthenticated:', isAuth);
-    console.log('GetUsersParamDto:', getUsersParamDto);
-    console.log('Limit:', limit);
-    console.log('Page:', page);
-    return [
+  public findAll() {
+    throw new HttpException(
       {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
-        password: 'aA1!11111',
+        status: HttpStatus.MOVED_PERMANENTLY,
+        error: 'The API endpoint does not exist',
       },
+      HttpStatus.MOVED_PERMANENTLY,
       {
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'jane.doe@example.com',
-        password: 'aA1!11112',
+        //this object is not sent to the client
+        description:
+          'The API endpoint does not exist just because it is not implemented',
+        cause: new Error('Not implemented'),
       },
-    ];
+    );
   }
 
   /**
