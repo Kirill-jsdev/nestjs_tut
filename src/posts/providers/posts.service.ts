@@ -15,6 +15,7 @@ import { PatchPostDto } from '../dtos/patch-post.dto';
 import { Tag } from 'src/tags/tag.entity';
 import { GetPostsQueryDto } from '../dtos/get-posts.dto';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
+import { IPaginated } from 'src/common/pagination/interfaces/paginated.interface';
 
 @Injectable()
 export class PostsService {
@@ -51,7 +52,7 @@ export class PostsService {
     return post ? this.postsRepository.save(post) : null;
   }
 
-  public async findAll(postQuery: GetPostsQueryDto) {
+  public async findAll(postQuery: GetPostsQueryDto): Promise<IPaginated<Post>> {
     const posts = await this.paginationProvider.paginateQuery<Post>(
       {
         limit: postQuery.limit,
