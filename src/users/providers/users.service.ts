@@ -1,4 +1,10 @@
-import { Injectable, forwardRef, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  forwardRef,
+  Inject,
+  RequestTimeoutException,
+  BadRequestException,
+} from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
 import { User } from '../user.entity';
@@ -29,12 +35,25 @@ export class UsersService {
 
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
     //check is the user with the same email exists
-    const existingUser = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
-    });
+
+    let existingUser;
+
+    try {
+      existingUser = await this.userRepository.findOne({
+        where: { email: createUserDto.email },
+      });
+    } catch (error) {
+      //here we might want to log the error somewhere, for example to an external logging service
+      //any sensitive info should not be logged, AND MUST NOT BE SENT TO THE CLIENT
+      console.error('Database error:', error);
+      throw new RequestTimeoutException('Database request timed out', {
+        description: 'Error connecting to the database',
+      });
+    }
+
     //Handle exception
     if (existingUser) {
-      throw new Error('User with this email already exists');
+      throw new BadRequestException('User with this email already exists');
     }
 
     //Create a new user
