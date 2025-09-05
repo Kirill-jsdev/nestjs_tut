@@ -16,6 +16,7 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import profileConfig from '../config/profile.config';
 import type { ConfigType } from '@nestjs/config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
+import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 
 /**
  * Service for handling user-related business logic and data access.
@@ -122,7 +123,7 @@ export class UsersService {
   }
 
   //this method will create multiple users in a transaction. WE IMPLEMENT A TRANSACTION
-  public async createManyUsers(createUserDtos: CreateUserDto[]) {
-    return this.usersCreateManyProvider.createManyUsers(createUserDtos);
+  public async createManyUsers(createManyUsersDto: CreateManyUsersDto) {
+    return this.usersCreateManyProvider.createManyUsers(createManyUsersDto);
   }
 }
