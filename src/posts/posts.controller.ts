@@ -24,7 +24,7 @@ export class PostsController {
   @Get()
   public getPosts(@Query() postQuery: GetPostsQueryDto) {
     console.log(postQuery);
-    return this.postsService.findAll();
+    return this.postsService.findAll(postQuery);
   }
 
   @ApiOperation({ summary: 'Creates a new post' })

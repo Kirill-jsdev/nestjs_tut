@@ -13,6 +13,7 @@ import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { PatchPostDto } from '../dtos/patch-post.dto';
 import { Tag } from 'src/tags/tag.entity';
+import { GetPostsQueryDto } from '../dtos/get-posts.dto';
 
 @Injectable()
 export class PostsService {
@@ -49,12 +50,10 @@ export class PostsService {
     return post ? this.postsRepository.save(post) : null;
   }
 
-  public async findAll() {
+  public async findAll(postQuery: GetPostsQueryDto) {
     const posts = await this.postsRepository.find({
-      relations: {
-        // author: true,
-        // tags: true,
-      },
+      skip: ((postQuery?.page || 1) - 1) * (postQuery?.limit || 10),
+      take: postQuery.limit || 10,
     });
 
     return posts;
