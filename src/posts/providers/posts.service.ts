@@ -1,4 +1,9 @@
-import { Body, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { UsersService } from '../../users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
 import { Post } from '../post.entity';
@@ -7,6 +12,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { PatchPostDto } from '../dtos/patch-post.dto';
+import { Tag } from 'src/tags/tag.entity';
 
 @Injectable()
 export class PostsService {
@@ -61,19 +67,59 @@ export class PostsService {
   }
 
   public async update(postId: number, patchPostDto: PatchPostDto) {
-    //Find the tags
-    const tags = patchPostDto.tags
-      ? await this.tagsService.findMultipleTags(patchPostDto.tags)
-      : [];
+    let tags: Tag[] | undefined;
+    let post: Post | null;
+
+    try {
+      tags = patchPostDto.tags
+        ? await this.tagsService.findMultipleTags(patchPostDto.tags)
+        : undefined;
+    } catch (error) {
+      console.error('Database error:', error);
+      throw new RequestTimeoutException('Database request timed out', {
+        description: 'Error connecting to the database',
+      });
+    }
+
+    if (
+      (patchPostDto.tags && tags === null) ||
+      (tags && tags.length !== (patchPostDto.tags?.length ?? 0))
+    ) {
+      throw new BadRequestException('Please, check your tag ids', {
+        description: 'Error connecting to the database',
+      });
+    }
+
     //Find the post
-    const post = await this.postsRepository.findOneBy({
-      id: postId,
-    });
+    try {
+      post = await this.postsRepository.findOneBy({
+        id: postId,
+      });
+    } catch (error) {
+      console.error('Database error:', error);
+      throw new RequestTimeoutException('Database request timed out', {
+        description: 'Error connecting to the database',
+      });
+    }
+
+    if (!post) {
+      throw new BadRequestException('Post not found', {
+        description: 'The post with the given id does not exist',
+      });
+    }
 
     //Update the properties of the post
     //Assign the new tags
     const updatedPost = { ...post, ...patchPostDto, tags };
     //Save the post and return it
-    return await this.postsRepository.save(updatedPost);
+    try {
+      await this.postsRepository.save(updatedPost);
+    } catch (error) {
+      console.error('Database error:', error);
+      throw new RequestTimeoutException('Database request timed out', {
+        description: 'Error connecting to the database',
+      });
+    }
+    return updatedPost;
   }
 }
