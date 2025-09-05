@@ -4,6 +4,7 @@ import {
   Inject,
   RequestTimeoutException,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
@@ -58,7 +59,15 @@ export class UsersService {
 
     //Create a new user
     let user = this.userRepository.create(createUserDto);
-    user = await this.userRepository.save(user);
+
+    try {
+      user = await this.userRepository.save(user);
+    } catch (error) {
+      console.error('Database error:', error);
+      throw new RequestTimeoutException('Database request timed out', {
+        description: 'Error connecting to the database',
+      });
+    }
     return user;
   }
 
@@ -101,8 +110,21 @@ export class UsersService {
    * @param id Unique identifier of the user.
    * @returns User object if found.
    */
-  public async findOneById(userId: number) {
-    const user = await this.userRepository.findOneBy({ id: userId });
+  public async findOneById(userId: number): Promise<User> {
+    let user: User | null;
+
+    try {
+      user = await this.userRepository.findOneBy({ id: userId });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+    } catch (error) {
+      console.error('Database error:', error);
+      throw new RequestTimeoutException('Database request timed out', {
+        description: 'Error connecting to the database',
+      });
+    }
+
     return user;
   }
 }
