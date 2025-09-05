@@ -10,6 +10,7 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true, //transforms a plain object into a class instance of DTO object. Cool feature
+      transformOptions: { enableImplicitConversion: true }, //this will enable implicit conversion of types like string to number or boolean in query params or path params
     }),
   );
 
