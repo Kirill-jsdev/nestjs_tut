@@ -7,7 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const ENV = process.env.NODE_ENV;
 
@@ -21,15 +21,15 @@ const ENV = process.env.NODE_ENV;
       envFilePath: !ENV ? '.env' : `.env.${ENV}`, //dynamically set env file based on the environment
     }),
     TypeOrmModule.forRootAsync({
-      imports: [],
-      inject: [],
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'nest',
-        password: 'nest',
-        database: 'nestdb',
+        host: configService.get('DATABASE_HOST'),
+        port: +configService.get('DATABASE_PORT'), //the plus sign converts string to number
+        username: configService.get('DATABASE_USER'),
+        password: configService.get('DATABASE_PASSWORD'),
+        database: configService.get('DATABASE_NAME'),
         // entities: [User], //we do not need this as we are using autoLoadEntities
         autoLoadEntities: true,
         synchronize: true, // Note: set to false in production. This way during development we will not need to use migrations
