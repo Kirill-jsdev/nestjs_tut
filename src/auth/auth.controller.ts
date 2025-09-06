@@ -9,5 +9,6 @@ export class AuthController {
   @Post('sign-in')
   public async signIn(@Body() signInDto: SignInDto) {
     //signIn logic here
+    return await this.authService.signIn(signInDto);
   }
 }
