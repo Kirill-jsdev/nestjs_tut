@@ -52,7 +52,7 @@ export class SignInProvider {
         audience: this.jwtConfiguration.signOptions.audience,
         issuer: this.jwtConfiguration.signOptions.issuer,
         secret: this.jwtConfiguration.secret,
-        expiresIn: this.jwtConfiguration.signOptions.accessTokenTtl,
+        expiresIn: this.jwtConfiguration.signOptions.expiresIn,
       },
     );
 

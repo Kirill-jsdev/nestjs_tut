@@ -5,6 +5,6 @@ export default registerAs('jwt', () => ({
   signOptions: {
     audience: process.env.JWT_TOKEN_AUDIENCE,
     issuer: process.env.JWT_TOKEN_ISSUER,
-    accessTokenTtl: +(process.env.JWT_ACCESS_TOKEN_TTL ?? 3600),
+    expiresIn: +(process.env.JWT_ACCESS_TOKEN_TTL ?? 3600),
   },
 }));
