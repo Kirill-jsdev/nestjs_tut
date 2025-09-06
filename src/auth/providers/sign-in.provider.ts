@@ -1,16 +1,11 @@
-import {
-  forwardRef,
-  Inject,
-  Injectable,
-  RequestTimeoutException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { forwardRef, Inject, Injectable, RequestTimeoutException, UnauthorizedException } from '@nestjs/common';
 import { SignInDto } from './signin.dto';
 import { UsersService } from 'src/users/providers/users.service';
 import { HashingProvider } from './hashing.provider';
 import { JwtService } from '@nestjs/jwt';
 import type { ConfigType } from '@nestjs/config';
 import jwtConfig from '../config/jwt.config';
+import { IActiveUser } from '../interfaces/active-user.interface';
 
 @Injectable()
 export class SignInProvider {
@@ -32,10 +27,7 @@ export class SignInProvider {
     let isPasswordValid: boolean = false;
 
     try {
-      isPasswordValid = await this.hashingProvider.comparePassword(
-        signInDto.password,
-        user.password,
-      );
+      isPasswordValid = await this.hashingProvider.comparePassword(signInDto.password, user.password);
     } catch (error) {
       throw new RequestTimeoutException(error, {
         description: 'Error during password comparison',
@@ -46,15 +38,12 @@ export class SignInProvider {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const accessToken = await this.jwtService.signAsync(
-      { sub: user.id, email: user.email },
-      {
-        audience: this.jwtConfiguration.signOptions.audience,
-        issuer: this.jwtConfiguration.signOptions.issuer,
-        secret: this.jwtConfiguration.secret,
-        expiresIn: this.jwtConfiguration.signOptions.expiresIn,
-      },
-    );
+    const accessToken = await this.jwtService.signAsync({ sub: user.id, email: user.email } as IActiveUser, {
+      audience: this.jwtConfiguration.signOptions.audience,
+      issuer: this.jwtConfiguration.signOptions.issuer,
+      secret: this.jwtConfiguration.secret,
+      expiresIn: this.jwtConfiguration.signOptions.expiresIn,
+    });
 
     return { accessToken };
   }
