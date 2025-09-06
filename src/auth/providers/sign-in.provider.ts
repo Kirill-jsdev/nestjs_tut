@@ -38,6 +38,6 @@ export class SignInProvider {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return user;
+    return true;
   }
 }
