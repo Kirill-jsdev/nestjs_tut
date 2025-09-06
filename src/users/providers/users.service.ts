@@ -3,7 +3,6 @@ import {
   forwardRef,
   Inject,
   RequestTimeoutException,
-  BadRequestException,
   NotFoundException,
   HttpException,
   HttpStatus,
@@ -17,6 +16,7 @@ import profileConfig from '../config/profile.config';
 import type { ConfigType } from '@nestjs/config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
+import { CreateUserProvider } from './create-user.provider';
 
 /**
  * Service for handling user-related business logic and data access.
@@ -37,43 +37,11 @@ export class UsersService {
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
 
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
+    private readonly createUserProvider: CreateUserProvider,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
-    //check is the user with the same email exists
-
-    let existingUser;
-
-    try {
-      existingUser = await this.userRepository.findOne({
-        where: { email: createUserDto.email },
-      });
-    } catch (error) {
-      //here we might want to log the error somewhere, for example to an external logging service
-      //any sensitive info should not be logged, AND MUST NOT BE SENT TO THE CLIENT
-      console.error('Database error:', error);
-      throw new RequestTimeoutException('Database request timed out', {
-        description: 'Error connecting to the database',
-      });
-    }
-
-    //Handle exception
-    if (existingUser) {
-      throw new BadRequestException('User with this email already exists');
-    }
-
-    //Create a new user
-    let user = this.userRepository.create(createUserDto);
-
-    try {
-      user = await this.userRepository.save(user);
-    } catch (error) {
-      console.error('Database error:', error);
-      throw new RequestTimeoutException('Database request timed out', {
-        description: 'Error connecting to the database',
-      });
-    }
-    return user;
+    return await this.createUserProvider.createUser(createUserDto);
   }
 
   /**
