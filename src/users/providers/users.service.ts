@@ -17,6 +17,7 @@ import type { ConfigType } from '@nestjs/config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 import { CreateUserProvider } from './create-user.provider';
+import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
 
 /**
  * Service for handling user-related business logic and data access.
@@ -38,6 +39,7 @@ export class UsersService {
 
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
     private readonly createUserProvider: CreateUserProvider,
+    private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -90,8 +92,34 @@ export class UsersService {
     return user;
   }
 
+  /**
+   * Finds a user by their email address.
+   * @param email Email address of the user.
+   * @returns User object if found, null if not found.
+   */
+  public async findOneByEmail(email: string): Promise<User | null> {
+    let user: User | null;
+
+    try {
+      user = await this.userRepository.findOneBy({ email });
+    } catch (error) {
+      console.error('Database error:', error);
+      throw new RequestTimeoutException('Database request timed out', {
+        description: 'Error connecting to the database',
+      });
+    }
+
+    return user;
+  }
+
   //this method will create multiple users in a transaction. WE IMPLEMENT A TRANSACTION
   public async createManyUsers(createManyUsersDto: CreateManyUsersDto) {
-    return this.usersCreateManyProvider.createManyUsers(createManyUsersDto);
+    return await this.usersCreateManyProvider.createManyUsers(
+      createManyUsersDto,
+    );
+  }
+
+  public async findUserByEmail(email: string) {
+    return await this.findOneUserByEmailProvider.findOneUserByEmail(email);
   }
 }
