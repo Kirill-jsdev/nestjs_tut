@@ -5,6 +5,8 @@ import { UsersService } from './providers/users.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { AuthTypeEnum } from 'src/auth/enums/auth-type.enum';
 
 @ApiTags('Users')
 @Controller('users')
@@ -39,6 +41,8 @@ export class UsersController {
   }
 
   @Post()
+  // @SetMetadata('authType', 'none') // Custom metadata to mark this route as public, which means no auth guard will be applied
+  @Auth(AuthTypeEnum.NONE)
   public createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
