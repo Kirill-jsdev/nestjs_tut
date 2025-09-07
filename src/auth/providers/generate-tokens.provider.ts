@@ -31,7 +31,7 @@ export class GenerateTokensProvider {
   public async generateTokens(user: User) {
     const [accessToken, refreshToken] = await Promise.all([
       this.signToken<Partial<IActiveUser>>(user.id, this.jwtConfiguration.signOptions.expiresIn, { email: user.email }),
-      this.signToken(user.id, this.jwtConfiguration.signOptions.refreshTokenExpiresIn),
+      this.signToken(user.id, this.jwtConfiguration.refreshTokenExpiresIn),
     ]);
 
     return { accessToken, refreshToken };
