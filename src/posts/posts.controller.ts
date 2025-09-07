@@ -1,20 +1,12 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { ApiTags } from '@nestjs/swagger/dist/decorators/api-use-tags.decorator';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { GetPostsQueryDto } from './dtos/get-posts.dto';
+import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
+import { type IActiveUser } from 'src/auth/interfaces/active-user.interface';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -34,15 +26,12 @@ export class PostsController {
     type: CreatePostDto,
   })
   @Post()
-  public createPost(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  public createPost(@Body() createPostDto: CreatePostDto, @ActiveUser() user: IActiveUser) {
+    return this.postsService.create(createPostDto, user);
   }
 
   @Patch('/:id')
-  public updatePost(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() patchPostsDto: PatchPostDto,
-  ) {
+  public updatePost(@Param('id', ParseIntPipe) id: number, @Body() patchPostsDto: PatchPostDto) {
     return this.postsService.update(id, patchPostsDto);
   }
 

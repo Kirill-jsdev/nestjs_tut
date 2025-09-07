@@ -46,8 +46,7 @@ export class CreatePostDto {
   @IsString()
   @IsNotEmpty()
   @Matches(/^([a-z0-9]+)(?:-[a-z0-9]+)*$/, {
-    message:
-      'A slug should be all small letters and uses only "-" and without spaces. For example "my-url"',
+    message: 'A slug should be all small letters and uses only "-" and without spaces. For example "my-url"',
   })
   @MaxLength(256)
   slug: string;
@@ -122,14 +121,4 @@ export class CreatePostDto {
   @ValidateNested()
   @Type(() => CreatePostMetaOptionsDto)
   metaOptions?: CreatePostMetaOptionsDto;
-
-  @ApiProperty({
-    type: 'integer',
-    required: true,
-    example: 1,
-    description: 'The ID of the author (user) of the post',
-  })
-  @IsNotEmpty()
-  @IsInt()
-  authorId: number;
 }
